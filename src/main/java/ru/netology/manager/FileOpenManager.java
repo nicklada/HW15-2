@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileOpenManager {
-    HashMap <String, String> maps = new HashMap<>();
+    HashMap<String, String> maps = new HashMap<>();
 
     public HashMap<String, String> getMaps() {
         return maps;

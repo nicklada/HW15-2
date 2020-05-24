@@ -124,10 +124,28 @@ class FileOpenManagerTest {
         }
 
         @Test
+        void shouldReturnNullIfKeyInCaps(){
+            String expected = null;
+            String actual = manager.getApp("HTML");
+            assertEquals(expected,actual);
+        }
+
+        @Test
         void shouldRemoveKey(){
             manager.removeKey("xml");
             Map<String, String> expected = new HashMap<>();
             expected.put("html","Safari");
+            expected.put("img","Viewer");
+            HashMap<String,String> actual = manager.getMaps();
+            assertEquals(expected,actual);
+        }
+
+        @Test
+        void shouldNotRemoveKeyIfCaps(){
+            manager.removeKey("XML");
+            Map<String, String> expected = new HashMap<>();
+            expected.put("html","Safari");
+            expected.put("xml","Google");
             expected.put("img","Viewer");
             HashMap<String,String> actual = manager.getMaps();
             assertEquals(expected,actual);
