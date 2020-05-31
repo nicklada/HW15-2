@@ -12,176 +12,179 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileOpenManagerTest {
-    FileOpenManager manager = new FileOpenManager();
+    private FileOpenManager manager = new FileOpenManager();
+
+    private String html = "html";
+    private String safari = "Safari";
+    private String xml = "xml";
+    private String google = "Google";
+    private String img = "img";
+    private String viewer = "Viewer";
+    private String dox = "dox";
+    private String keyInCaps = "HTML";
 
     @Nested
-    public class EmptyManager{
+    public class EmptyManager {
 
         @Test
-        void shouldReturnNullIfNoApp(){
+        void shouldReturnNullIfNoApp() {
             String expected = null;
-            String actual = manager.getApp("html");
-            assertEquals(expected,actual);
+            String actual = manager.getApp(html);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldReturnEmptyIfNothingToRemove(){
+        void shouldReturnEmptyIfNothingToRemove() {
             Map<String, String> expected = new HashMap<>();
-            manager.removeKey("html");
-            HashMap<String,String> actual = manager.getMaps();
-            assertEquals(expected,actual);
+            manager.removeKey(html);
+            HashMap<String, String> actual = manager.getMaps();
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldGetEmptyIfNoKeys(){
+        void shouldGetEmptyIfNoKeys() {
             List<String> expected = new ArrayList<>();
-            expected.addAll(List.of());
             List<String> actual = manager.getAllKeys();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldGetEmptyIfNoValues(){
+        void shouldGetEmptyIfNoValues() {
             List<String> expected = new ArrayList<>();
-            expected.addAll(List.of());
             List<String> actual = manager.getAllValues();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
     }
 
     @Nested
-    public class SingleItemManager{
+    public class SingleItemManager {
 
         @Test
-        void shouldReturnApp(){
-            manager.registerApp("html","Safari");
-            String expected = "Safari";
-            String actual = manager.getApp("html");
-            assertEquals(expected,actual);
+        void shouldReturnApp() {
+            manager.registerApp(html, safari);
+            String expected = safari;
+            String actual = manager.getApp(html);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldRemoveKey(){
-            manager.registerApp("html","Safari");
+        void shouldRemoveKey() {
+            manager.registerApp(html, safari);
             Map<String, String> expected = new HashMap<>();
-            manager.removeKey("html");
-            HashMap<String,String> actual = manager.getMaps();
-            assertEquals(expected,actual);
+            manager.removeKey(html);
+            HashMap<String, String> actual = manager.getMaps();
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldGetOneKey(){
-            manager.registerApp("html","Safari");
-            List<String> expected = new ArrayList<>();
-            expected.addAll(List.of("html"));
+        void shouldGetOneKey() {
+            manager.registerApp(html, safari);
+            List<String> expected = new ArrayList<>(List.of(html));
             List<String> actual = manager.getAllKeys();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldGetOneValue(){
-            manager.registerApp("html","Safari");
-            List<String> expected = new ArrayList<>();
-            expected.addAll(List.of("Safari"));
+        void shouldGetOneValue() {
+            manager.registerApp(html, safari);
+            List<String> expected = new ArrayList<>(List.of(safari));
             List<String> actual = manager.getAllValues();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
     }
 
     @Nested
-    public class MultipleItemsManager{
+    public class MultipleItemsManager {
 
         @BeforeEach
         void setup() {
             manager = new FileOpenManager();
-            manager.registerApp("html","Safari");
-            manager.registerApp("xml","Google");
-            manager.registerApp("img","Viewer");
+            manager.registerApp(html, safari);
+            manager.registerApp(xml, google);
+            manager.registerApp(img, viewer);
         }
 
         @Test
-        void shouldAddAll(){
+        void shouldAddAll() {
             HashMap<String, String> expected = new HashMap<>();
-            expected.put("html","Safari");
-            expected.put("xml","Google");
-            expected.put("img","Viewer");
+            expected.put(html, safari);
+            expected.put(xml, google);
+            expected.put(img, viewer);
             HashMap<String, String> actual = manager.getMaps();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldReturnOneApp(){
-            String expected = "Safari";
-            String actual = manager.getApp("html");
-            assertEquals(expected,actual);
+        void shouldReturnOneApp() {
+            String expected = safari;
+            String actual = manager.getApp(html);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldReturnNullIfInvalidKey(){
+        void shouldReturnNullIfInvalidKey() {
             String expected = null;
-            String actual = manager.getApp("dox");
-            assertEquals(expected,actual);
+            String actual = manager.getApp(dox);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldReturnNullIfKeyInCaps(){
+        void shouldReturnNullIfKeyInCaps() {
             String expected = null;
-            String actual = manager.getApp("HTML");
-            assertEquals(expected,actual);
+            String actual = manager.getApp(keyInCaps);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldRemoveKey(){
-            manager.removeKey("xml");
+        void shouldRemoveKey() {
+            manager.removeKey(xml);
             Map<String, String> expected = new HashMap<>();
-            expected.put("html","Safari");
-            expected.put("img","Viewer");
-            HashMap<String,String> actual = manager.getMaps();
-            assertEquals(expected,actual);
+            expected.put(html, safari);
+            expected.put(img, viewer);
+            HashMap<String, String> actual = manager.getMaps();
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldNotRemoveKeyIfCaps(){
-            manager.removeKey("XML");
+        void shouldNotRemoveKeyIfCaps() {
+            manager.removeKey(keyInCaps);
             Map<String, String> expected = new HashMap<>();
-            expected.put("html","Safari");
-            expected.put("xml","Google");
-            expected.put("img","Viewer");
-            HashMap<String,String> actual = manager.getMaps();
-            assertEquals(expected,actual);
+            expected.put(html, safari);
+            expected.put(xml, google);
+            expected.put(img, viewer);
+            HashMap<String, String> actual = manager.getMaps();
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldNotRemoveKeyIfInvalid(){
-            manager.removeKey("dox");
+        void shouldNotRemoveKeyIfInvalid() {
+            manager.removeKey(dox);
             Map<String, String> expected = new HashMap<>();
-            expected.put("html","Safari");
-            expected.put("xml","Google");
-            expected.put("img","Viewer");
-            HashMap<String,String> actual = manager.getMaps();
-            assertEquals(expected,actual);
+            expected.put(html, safari);
+            expected.put(xml, google);
+            expected.put(img, viewer);
+            HashMap<String, String> actual = manager.getMaps();
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldGetAllKeysSorted(){
-            manager.registerApp("html","Safari");
-            manager.registerApp("xml","Google");
-            manager.registerApp("img","Viewer");
-            List<String> expected = new ArrayList<>();
-            expected.addAll(List.of("html","img","xml"));
+        void shouldGetAllKeysSorted() {
+            manager.registerApp(html, safari);
+            manager.registerApp(xml, google);
+            manager.registerApp(img, viewer);
+            List<String> expected = new ArrayList<>(List.of(html, img, xml));
             List<String> actual = manager.getAllKeys();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
 
         @Test
-        void shouldGetAllValuesSorted(){
-            manager.registerApp("html","Safari");
-            manager.registerApp("xml","Google");
-            manager.registerApp("img","Viewer");
-            List<String> expected = new ArrayList<>();
-            expected.addAll(List.of("Google","Safari","Viewer"));
+        void shouldGetAllValuesSorted() {
+            manager.registerApp(html, safari);
+            manager.registerApp(xml, google);
+            manager.registerApp(img, viewer);
+            List<String> expected = new ArrayList<>(List.of(google, safari, viewer));
             List<String> actual = manager.getAllValues();
-            assertEquals(expected,actual);
+            assertEquals(expected, actual);
         }
     }
 }

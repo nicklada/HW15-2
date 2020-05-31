@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
-import static java.lang.String.CASE_INSENSITIVE_ORDER;
-
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileOpenManager {
